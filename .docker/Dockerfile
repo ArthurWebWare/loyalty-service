@@ -26,10 +26,7 @@ RUN curl -sS https://getcomposer.org/installer | php -- \
         --install-dir=/usr/local/bin && \
         echo "alias composer='composer'" >> /root/.bashrc && \
         composer
-
-RUN addgroup -S www && adduser -S www -G www
-
-# Change current user to www
-USER www
+        
+COPY . /var/www/
 
 CMD ["php", "artisan", "serve", "--host", "0.0.0.0"]
