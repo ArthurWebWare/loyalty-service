@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api\v1;
 
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use App\Http\Controllers\Controller;
 
 class UserController extends Controller
 {
@@ -29,13 +30,15 @@ class UserController extends Controller
         } else {
             return response()->json(['message' => 'Bad credentials'], 401);
         }
-
-        return response()->json(['user' => $user, 'token' => $token], 201);
+        echo '<pre>';   
+        print_r($user);
+        exit;
+        return response()->json(['user' => $user, 'token' => $token], 200);
     }
 
     public function logout(Request $request)
-    {
+    {   
         $request->user()->tokens()->delete();
-        return ['message' => 'Logged out'];
+        return response()->json(['message' => 'Logged out'], 200);
     }
 }
