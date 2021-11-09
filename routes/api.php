@@ -23,15 +23,24 @@ Route::group(['prefix' => 'v1', 'namespace' => 'Api\v1'], function () {
     Route::middleware('auth:sanctum')->get('auth/logout', [AuthController::class, 'logout']);
     Route::middleware('auth:sanctum')->get('user',function (Request $request){ return $request->user(); });
 
-    Route::group(['middleware' => ['auth:sanctum']], function () {        
+    Route::group(['middleware' => ['auth:sanctum']], function () {
         // account management
-        Route::post('account/create', [AccountController::class, 'create']);
-        Route::post('account/activate/{type}/{id}', [AccountController::class, 'activate']);
-        Route::post('account/deactivate/{type}/{id}', [AccountController::class, 'deactivate']);
-        Route::get('account/balance/{type}/{id}', [AccountController::class, 'balance']);
+        Route::group(['prefix' => 'accounts'], function (){
+            Route::get('/', [AccountController::class, 'index']);
+            Route::post('create', [AccountController::class, 'create']);
+            Route::get('view/{type}/{id}', [AccountController::class, 'view']);
+            Route::patch('activate/{type}/{id}', [AccountController::class, 'activate']);
+            Route::patch('deactivate/{type}/{id}', [AccountController::class, 'deactivate']);
+            Route::get('balance/{type}/{id}', [AccountController::class, 'balance']);
+        });
+
         // loyalty points management
-        Route::post('loyaltyPoints/deposit', [LoyaltyPointsController::class, 'deposit']);
-        Route::post('loyaltyPoints/withdraw', [LoyaltyPointsController::class, 'withdraw']);
-        Route::post('loyaltyPoints/cancel', [LoyaltyPointsController::class, 'cancel']);
+        Route::group(['preifx' => 'loyaltyPoints'], function (){
+
+            Route::post('deposit', [LoyaltyPointsController::class, 'deposit']);
+            Route::post('withdraw', [LoyaltyPointsController::class, 'withdraw']);
+            Route::post('cancel', [LoyaltyPointsController::class, 'cancel']);
+            
+        });
     });
 });
