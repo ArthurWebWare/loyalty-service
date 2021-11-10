@@ -32,7 +32,7 @@ Route::group(['prefix' => 'v1', 'namespace' => 'Api\v1'], function () {
             Route::get('/', [AccountController::class, 'index']);
             Route::get('{type}/{id}', [AccountController::class, 'view']);
 
-            Route::post('create', [AccountController::class, 'create']);
+            Route::post('/', [AccountController::class, 'create']);
             
             Route::patch('activate/{type}/{id}', [AccountController::class, 'activate']);
             Route::patch('deactivate/{type}/{id}', [AccountController::class, 'deactivate']);
@@ -41,7 +41,7 @@ Route::group(['prefix' => 'v1', 'namespace' => 'Api\v1'], function () {
 
         Route::group(['prefix' => 'transactions'], function (){
             // loyalty points management
-            Route::get('{type}/{id}', [TransactionsController::class, 'deposit']);
+            Route::post('{type}/{id}', [TransactionsController::class, 'deposit']);
             Route::post('{type}/{id}/withdraw', [TransactionsController::class, 'withdraw']);
             Route::post('cancel', [TransactionsController::class, 'cancel']);
             

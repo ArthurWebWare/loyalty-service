@@ -42,3 +42,116 @@ docker run -it --user www -v ${pwd}:/var/www test-task-loyalty-service /bin/sh -
 cd test-task-loyalty-service && docker-compose up
 docker run -it --user www -v $PWD:/var/www test-task-loyalty-service /bin/sh -lc "composer install && cp .env.example .env && php artisan key:generate && php artisan migrate"
 ```
+
+## Usege
+
+- Auth
+```
+POST /api/v1/auth/register
+
+``` 
+Param Json 
+```
+name
+email
+password
+```
+
+- Login
+```
+POST /api/v1/auth/login
+```
+Param Json
+```
+email
+password
+```
+- Logout
+```
+GET /api/v1/auth/logout
+```
+
+- User data
+```
+GET /api/v1/user
+```
+Need to be authenticaded with token bearer
+
+
+- Accounts
+
+Auth status required
+
+Accounts list
+```
+GET /api/v1/accounts
+```
+
+Account data
+```
+GET /api/v1/accounts/{type}/{id}
+```
+
+Account create
+```
+POST /api/v1/accounts/
+```
+Param Json
+```
+phone
+email
+card
+```
+
+Account activate
+```
+PATCH /api/v1/accounts/activate/{type}/{id}
+```
+
+Account deactivate
+```
+PATCH /api/v1/accounts/deactivate/{type}/{id}
+```
+
+Account balance
+```
+GET /api/v1/accounts/balance/{type}/{id}
+```
+
+-Transactions
+
+Auth status required
+
+Deposit
+```
+POST /api/v1/transactions/{type}/{id}
+```
+Param Json
+```
+points_rule
+points_amount
+description
+payment_id
+payment_amount
+payment_time
+```
+
+Withdraw
+```
+POST /api/v1/transactions/{type}/{id}/withdraw
+```
+Param Json
+```
+points_amount
+description
+```
+
+Cancel
+```
+POST /api/v1/transactions/cancel
+```
+Param Json
+```
+points_amount
+description
+```
