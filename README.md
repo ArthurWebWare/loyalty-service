@@ -43,7 +43,7 @@ cd test-task-loyalty-service && docker-compose up
 docker run -it --user www -v $PWD:/var/www test-task-loyalty-service /bin/sh -lc "composer install && cp .env.example .env && php artisan key:generate && php artisan migrate"
 ```
 
-## Usege
+## Usage
 
 - Auth
 ```
