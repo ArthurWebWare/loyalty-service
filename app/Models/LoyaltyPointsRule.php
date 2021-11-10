@@ -12,6 +12,7 @@ class LoyaltyPointsRule extends Model
     protected $table = 'loyalty_points_rule';
 
     protected $fillable = [
+        'id',
         'points_rule',
         'accrual_type',
         'accrual_value',

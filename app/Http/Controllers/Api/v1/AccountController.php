@@ -26,7 +26,7 @@ class AccountController extends Controller
 
         $count = $users->count();
         if(!$count){
-            return response()->json(['errors' => 'Accounts Not Found','message' =>[]], 200);
+            return response()->json(['message' => 'Accounts Not Found'], 200);
         }
 
         return response()->json(['message' => 'Success','data' => $users], 200);
@@ -60,8 +60,7 @@ class AccountController extends Controller
             ],201);
         } else {
             return response()->json([
-                'message' => 'Create account failed',
-                'errors' => 'Bad Request'
+                'errors' => ['Create account failed: Bad Request']
             ],400);
         }
     }
@@ -72,7 +71,7 @@ class AccountController extends Controller
             if($account = LoyaltyAccount::where($type, '=', $id)->first()) {
                 return response()->json(['message'=>'Success','data'=>$account],200);
             } else {
-                return response()->json(['errors'=>'Account not found','message' => []],401);
+                return response()->json(['errors'=> ['Account not found']],401);
             }
         }
     }
@@ -91,10 +90,10 @@ class AccountController extends Controller
                     return response()->json(['message' => 'Account is already active','data'=>$account], 200);
                 }
             } else {
-                return response()->json(['errors'=> 'Account is not found', 'message' => []], 400);
+                return response()->json(['errors'=> ['Account is not found']], 400);
             }
         } else {
-            return response()->json(['message' => 'Bad credentials','errors'=> 'type or id is empty'], 400);
+            return response()->json(['errors'=> ['Bad credentials: type or id is empty']], 400);
         }
     }
 
@@ -111,10 +110,10 @@ class AccountController extends Controller
                     return response()->json(['message' => 'Account is already banned','data'=>$account], 200);
                 }
             } else {
-                return response()->json(['errors'=> 'Account is not found', 'message' => []], 400);
+                return response()->json(['errors'=> ['Account is not found']], 400);
             }
         } else {
-            return response()->json(['message' => 'Bad credentials','errors'=> 'type or id is empty'], 400);
+            return response()->json(['errors'=> ['Bad credentials: type or id is empty']], 400);
         }
 
         return response()->json(['message' => 'Success','data'=>$account],200);
@@ -129,10 +128,10 @@ class AccountController extends Controller
                     'data' => $account,
                     'balance' => $account->getBalance()], 200);
             } else {
-                return response()->json(['message' => 'Account is not found','errors' => 'type or id is wrong'], 404);
+                return response()->json(['errors' => ['Account is not found: type or id is wrong']], 400);
             }
         } else {
-            return response()->json(['message' => 'Bad credentials','errors'=> 'type or id is empty'], 404);
+            return response()->json(['errors'=> ['Bad credentials: type or id is empty']], 400);
         }
     }
 }

@@ -18,12 +18,12 @@ class LoyaltyPointsTransaction extends Model
         'payment_time',
     ];
 
-    public static function performPaymentLoyaltyPoints($account_id, $points_rule, $description, $payment_id, $payment_amount, $payment_time)
+    public static function performPaymentLoyaltyPoints($account_id, $points_rule_id, $description, $payment_id, $payment_amount, $payment_time)
     {
         $points_amount = 0;
 
-        if ($pointsRule = LoyaltyPointsRule::where('points_rule', '=', $points_rule)->first()) {
-            $points_amount = match ($pointsRule->accrual_type) {
+        if ($pointsRule = LoyaltyPointsRule::where('id', '=', $points_rule_id)->first()) {
+            $points_amount = match($pointsRule->accrual_type) {
                 LoyaltyPointsRule::ACCRUAL_TYPE_RELATIVE_RATE => ($payment_amount / 100) * $pointsRule->accrual_value,
                 LoyaltyPointsRule::ACCRUAL_TYPE_ABSOLUTE_POINTS_AMOUNT => $pointsRule->accrual_value
             };

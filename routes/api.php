@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\v1\AccountController;
+use App\Http\Controllers\Api\v1\TransactionsController;
 use App\Http\Controllers\Api\v1\LoyaltyPointsController;
 use App\Http\Controllers\Api\v1\AuthController;
 use Illuminate\Support\Facades\Route;
@@ -17,6 +18,7 @@ use Illuminate\Http\Request;
 |
 */
 Route::group(['prefix' => 'v1', 'namespace' => 'Api\v1'], function () {
+
     Route::post('auth/register', [AuthController::class, 'register']);
     Route::post('auth/login', [AuthController::class, 'login']);
     
@@ -24,22 +26,24 @@ Route::group(['prefix' => 'v1', 'namespace' => 'Api\v1'], function () {
     Route::middleware('auth:sanctum')->get('user',function (Request $request){ return $request->user(); });
 
     Route::group(['middleware' => ['auth:sanctum']], function () {
-        // account management
+       
         Route::group(['prefix' => 'accounts'], function (){
+             // account management
             Route::get('/', [AccountController::class, 'index']);
+            Route::get('{type}/{id}', [AccountController::class, 'view']);
+
             Route::post('create', [AccountController::class, 'create']);
-            Route::get('view/{type}/{id}', [AccountController::class, 'view']);
+            
             Route::patch('activate/{type}/{id}', [AccountController::class, 'activate']);
             Route::patch('deactivate/{type}/{id}', [AccountController::class, 'deactivate']);
             Route::get('balance/{type}/{id}', [AccountController::class, 'balance']);
         });
 
-        // loyalty points management
-        Route::group(['preifx' => 'loyaltyPoints'], function (){
-
-            Route::post('deposit', [LoyaltyPointsController::class, 'deposit']);
-            Route::post('withdraw', [LoyaltyPointsController::class, 'withdraw']);
-            Route::post('cancel', [LoyaltyPointsController::class, 'cancel']);
+        Route::group(['prefix' => 'transactions'], function (){
+            // loyalty points management
+            Route::get('{type}/{id}', [TransactionsController::class, 'deposit']);
+            Route::post('{type}/{id}/withdraw', [TransactionsController::class, 'withdraw']);
+            Route::post('cancel', [TransactionsController::class, 'cancel']);
             
         });
     });
